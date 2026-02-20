@@ -14,12 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+import os
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from .views import UserViewSet, TeamViewSet, ActivityViewSet, LeaderboardViewSet, WorkoutViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+
+# Get codespace name from environment
+codespace_name = os.environ.get('CODESPACE_NAME', 'localhost')
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -40,6 +44,11 @@ def api_root(request):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', api_root, name='api_root'),
-    path('', include(router.urls)),
+    path('api/', api_root, name='api_root'),
+    path('api/', include(router.urls)),
 ]
+
+# Example endpoint URL for documentation purposes
+# https://$CODESPACE_NAME-8000.app.github.dev/api/[component]/
+# e.g. https://{}-8000.app.github.dev/api/activities/
+# This is for reference; actual endpoint routing is handled above.
