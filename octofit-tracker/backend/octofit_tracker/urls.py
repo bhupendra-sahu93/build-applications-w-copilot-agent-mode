@@ -42,7 +42,13 @@ def api_root(request):
         'workouts': '/workouts/',
     })
 
+from django.http import HttpResponse
+
+def root_view(request):
+    return HttpResponse("<h2>Welcome to Octofit Tracker API</h2><p>Visit <a href='/api/'>/api/</a> for the API root.</p>")
+
 urlpatterns = [
+    path('', root_view, name='root'),
     path('admin/', admin.site.urls),
     path('api/', api_root, name='api_root'),
     path('api/', include(router.urls)),
